@@ -8,6 +8,8 @@ env:
   PROJECT_ID: gcp-serverless-portfolio      # 🔴 Replace this
   REGION: asia-southeast1                   # 🔴 Replace this
   REPO_NAME: gcp-serverless-portfolio            # 🔴 Replace this
+    # 🟢 FIX 1: Opt-in to the new Node.js runtime to clear the warning
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true 
 
 jobs:
   deploy:
@@ -18,12 +20,12 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Authenticate to Google Cloud
-      uses: google-github-actions/auth@v2
+      uses: google-github-actions/auth@v3
       with:
         credentials_json: ${{ secrets.GCP_SA_KEY }}
 
     - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@v2
+      uses: google-github-actions/setup-gcloud@v3
 
     - name: Configure Docker
       run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
@@ -37,7 +39,7 @@ jobs:
         echo "BACKEND_TAG=$BACKEND_TAG" >> $GITHUB_ENV
 
     - name: Deploy Backend to Cloud Run
-      uses: google-github-actions/deploy-cloudrun@v2
+      uses: google-github-actions/deploy-cloudrun@v3
       with:
         service: portfolio-backend
         region: ${{ env.REGION }}
@@ -55,7 +57,7 @@ jobs:
         echo "FRONTEND_TAG=$FRONTEND_TAG" >> $GITHUB_ENV
 
     - name: Deploy Frontend to Cloud Run
-      uses: google-github-actions/deploy-cloudrun@v2
+      uses: google-github-actions/deploy-cloudrun@v3
       with:
         service: portfolio-frontend
         region: ${{ env.REGION }}
