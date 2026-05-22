@@ -5,11 +5,12 @@ on:
     branches: [ "main" ]
 
 env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true 
   PROJECT_ID: gcp-serverless-portfolio      # 🔴 Replace this
   REGION: asia-southeast1                   # 🔴 Replace this
   REPO_NAME: gcp-serverless-portfolio            # 🔴 Replace this
     # 🟢 FIX 1: Opt-in to the new Node.js runtime to clear the warning
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true 
+  
 
 jobs:
   deploy:
