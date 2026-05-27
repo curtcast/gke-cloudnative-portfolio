@@ -76,3 +76,4 @@ jobs:
         service: portfolio-frontend
         region: ${{ env.REGION }}
         image: ${{ env.FRONTEND_TAG }}
+        revision_traffix: 'LATEST=100'
