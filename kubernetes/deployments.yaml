@@ -26,13 +26,13 @@ spec:
           httpGet:
             path: /
             port: 8080
-          initialDelaySeconds: 15
+          initialDelaySeconds: 45 #from 15
           periodSeconds: 20
         readinessProbe:
           httpGet:
             path: /
             port: 8080
-          initialDelaySeconds: 5
+          initialDelaySeconds: 20  #from 5
           periodSeconds: 10
 ---
 apiVersion: v1
@@ -68,6 +68,20 @@ spec:
         image: asia-southeast1-docker.pkg.dev/gcp-serverless-portfolio/gcp-serverless-portfolio/backend:latest
         ports:
         - containerPort: 8080
+               livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 45 # Increased from 15
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 20 # Increased from 5
+          periodSeconds: 10
+
+
 ---
 apiVersion: v1
 kind: Service
@@ -102,6 +116,18 @@ spec:
         image: asia-southeast1-docker.pkg.dev/gcp-serverless-portfolio/gcp-serverless-portfolio/frontend:latest
         ports:
         - containerPort: 80
+          livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 30 # Increased from 10
+          periodSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 15 # Increased from 3
+          periodSeconds: 10
 ---
 apiVersion: v1
 kind: Service
