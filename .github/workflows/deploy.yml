@@ -100,6 +100,33 @@ jobs:
 
     - name: Verify Live Rollout Statuses
       run: |
-        kubectl rollout status deployment/portfolio-frontend --timeout=300s
-        kubectl rollout status deployment/portfolio-backend --timeout=300s
-        kubectl rollout status deployment/increment-visitor-counter --timeout=300s
+        echo "=== Launching Parallel Rollout Verification ==="
+        
+        # 1. Trigger the checks in the background (using the '&' operator)
+        kubectl rollout status deployment/portfolio-frontend --timeout=180s &
+        PID_FRONTEND=$!
+        
+        kubectl rollout status deployment/portfolio-backend --timeout=180s &
+        PID_BACKEND=$!
+        
+        kubectl rollout status deployment/increment-visitor-counter --timeout=180s &
+        PID_COUNTER=$!
+        
+        # 2. Wait for all background checks to finish
+        wait $PID_FRONTEND
+        STATUS_FRONTEND=$?
+        
+        wait $PID_BACKEND
+        STATUS_BACKEND=$?
+        
+        wait $PID_COUNTER
+        STATUS_COUNTER=$?
+        
+        # 3. Evaluate results
+        if [ $STATUS_FRONTEND -ne 0 ] || [ $STATUS_BACKEND -ne 0 ] || [ $STATUS_COUNTER -ne 0 ]; then
+          echo "❌ One or more deployments failed to roll out within the window."
+          exit 1
+        fi
+        
+        echo "✅ All microservices rolled out and reached a healthy state successfully!"
+
