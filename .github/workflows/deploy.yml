@@ -77,3 +77,29 @@ jobs:
         region: ${{ env.REGION }}
         image: ${{ env.FRONTEND_TAG }}
         revision_traffix: 'LATEST=100'
+
+    # ==========================================
+    # ☸️ GKE DEPLOYMENT LAYER (SAFE APPEND)
+    # ==========================================
+    - name: Connect to GKE Cluster
+      uses: google-github-actions/get-gke-credentials@v2
+      with:
+        cluster_name: 'portfolio-cluster'
+        location: '${{ env.REGION }}'
+        project_id: '${{ env.PROJECT_ID }}'
+
+    # Updates manifests to point to the fresh image tags built in your steps above
+    - name: Inject Safe Container Tags into Manifests
+      run: |
+        sed -i "s|portfolio-frontend:latest|portfolio-frontend:${{ github.sha }}|g" kubernetes/deployments.yaml
+        sed -i "s|portfolio-backend:latest|portfolio-backend:${{ github.sha }}|g" kubernetes/deployments.yaml
+
+    - name: Deploy Manifests to GKE Cluster
+      run: |
+        kubectl apply -f kubernetes/deployments.yaml
+
+    - name: Verify Live Rollout Statuses
+      run: |
+        kubectl rollout status deployment/portfolio-frontend --timeout=120s
+        kubectl rollout status deployment/portfolio-backend --timeout=120s
+        kubectl rollout status deployment/increment-visitor-counter --timeout=120s

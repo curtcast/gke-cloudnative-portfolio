@@ -1,0 +1,118 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: increment-visitor-counter
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: increment-visitor-counter
+  template:
+    metadata:
+      labels:
+        app: increment-visitor-counter
+    spec:
+      containers:
+      - name: counter-api
+        image: asia-southeast1-docker.pkg.dev/gcp-serverless-portfolio/gcp-serverless-portfolio/increment-visitor-counter:latest
+        ports:
+        - containerPort: 8080
+      # Injects your environment variable just like your Cloud Run setup does!
+        env:
+        - name: FUNCTION_TARGET
+          value: "increment_visitor_counter"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: increment-visitor-counter-service
+  namespace: default
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: increment-visitor-counter
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portfolio-backend
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: portfolio-backend
+  template:
+    metadata:
+      labels:
+        app: portfolio-backend
+    spec:
+      containers:
+      - name: backend-api
+        image: asia-southeast1-docker.pkg.dev/gcp-serverless-portfolio/gcp-serverless-portfolio/backend:latest
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: portfolio-backend-service
+  namespace: default
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: portfolio-backend
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portfolio-frontend
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: portfolio-frontend
+  template:
+    metadata:
+      labels:
+        app: portfolio-frontend
+    spec:
+      containers:
+      - name: frontend-ui
+        image: asia-southeast1-docker.pkg.dev/gcp-serverless-portfolio/gcp-serverless-portfolio/frontend:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: portfolio-frontend-service
+  namespace: default
+spec:
+  type: LoadBalancer # Grants a public external IP in asia-southeast1
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: portfolio-frontend
+
