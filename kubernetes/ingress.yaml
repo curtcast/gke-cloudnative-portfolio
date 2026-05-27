@@ -1,0 +1,38 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: portfolio-ingress
+  namespace: default
+  annotations:
+    # Tells GKE to provision a Google Cloud HTTP External Load Balancer
+    kubernetes.io/ingress.class: "gce"
+spec:
+  rules:
+  - http:
+      paths:
+      # Pattern 1: Any standard request routes directly to your Nginx frontend
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: portfolio-frontend-service
+            port:
+              number: 80
+              
+      # Pattern 2: Requests hitting /api route straight to your core Python backend
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: portfolio-backend-service
+            port:
+              number: 8080
+
+      # Pattern 3: Visitor counter tracking endpoint
+      - path: /counter
+        pathType: Prefix
+        backend:
+          service:
+            name: increment-visitor-counter-service
+            port:
+              number: 8080

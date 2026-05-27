@@ -147,7 +147,7 @@ metadata:
   name: portfolio-frontend-service
   namespace: default
 spec:
-  type: LoadBalancer
+  type: NodePort #changed from LoadBalancer to prevent Ingress routing
   ports:
   - port: 80
     targetPort: 8080
