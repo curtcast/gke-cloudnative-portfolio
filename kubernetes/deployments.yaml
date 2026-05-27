@@ -18,7 +18,6 @@ spec:
         image: portfolio-backend:latest
         ports:
         - containerPort: 8080
-      # Injects your environment variable just like your Cloud Run setup does!
         env:
         - name: FUNCTION_TARGET
           value: "increment_visitor_counter"
@@ -26,13 +25,13 @@ spec:
           httpGet:
             path: /
             port: 8080
-          initialDelaySeconds: 45 #from 15
+          initialDelaySeconds: 45
           periodSeconds: 20
         readinessProbe:
           httpGet:
             path: /
             port: 8080
-          initialDelaySeconds: 20  #from 5
+          initialDelaySeconds: 20
           periodSeconds: 10
 ---
 apiVersion: v1
@@ -68,20 +67,18 @@ spec:
         image: portfolio-backend:latest
         ports:
         - containerPort: 8080
-               livenessProbe:
+        livenessProbe:
           httpGet:
             path: /
             port: 8080
-          initialDelaySeconds: 45 # Increased from 15
+          initialDelaySeconds: 45
           periodSeconds: 20
         readinessProbe:
           httpGet:
             path: /
             port: 8080
-          initialDelaySeconds: 20 # Increased from 5
+          initialDelaySeconds: 20
           periodSeconds: 10
-
-
 ---
 apiVersion: v1
 kind: Service
@@ -116,17 +113,17 @@ spec:
         image: portfolio-frontend:latest
         ports:
         - containerPort: 80
-          livenessProbe:
+        livenessProbe:
           httpGet:
             path: /
             port: 80
-          initialDelaySeconds: 30 # Increased from 10
+          initialDelaySeconds: 30
           periodSeconds: 15
         readinessProbe:
           httpGet:
             path: /
             port: 80
-          initialDelaySeconds: 15 # Increased from 3
+          initialDelaySeconds: 15
           periodSeconds: 10
 ---
 apiVersion: v1
@@ -135,10 +132,9 @@ metadata:
   name: portfolio-frontend-service
   namespace: default
 spec:
-  type: LoadBalancer # Grants a public external IP in asia-southeast1
+  type: LoadBalancer
   ports:
   - port: 80
     targetPort: 80
   selector:
     app: portfolio-frontend
-
