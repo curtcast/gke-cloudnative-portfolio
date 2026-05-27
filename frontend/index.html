@@ -3,224 +3,283 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Peter Curt Castro | Cloud DevOps Portfolio</title>
+    <title>Peter Curt Castro | Cloud Engineer Resume</title>
     <style>
         :root {
-            --bg-color: #0d1117;
-            --card-bg: #161b22;
-            --border-color: #30363d;
-            --text-main: #c9d1d9;
-            --text-muted: #8b949e;
-            --accent-blue: #58a6ff;
-            --accent-green: #3fb950;
+            --primary: #2b3a4a; /* Slate Gray */
+            --accent: #34a853;  /* GCP Green Accent */
+            --cloud-blue: #4285f4; /* GCP Blue Accent */
+            --bg: #f8f9fa;
+            --text: #333333;
+            --light-text: #666666;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: var(--bg);
+            color: var(--text);
             margin: 0;
             padding: 0;
-            line-height: 1.6;
-        }
-
-        header {
-            border-bottom: 1px solid var(--border-color);
-            padding: 3rem 1rem;
-            text-align: center;
-            background: linear-gradient(180deg, #161b22 0%, #0d1117 100%);
         }
 
         .container {
             max-width: 900px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            border-top: 8px solid var(--cloud-blue);
         }
 
-        h1, h2, h3 {
-            color: #ffffff;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.3rem;
+        header {
+            border-bottom: 2px solid #eeeeee;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
         }
 
-        h1 { border-none: true; padding-bottom: 0; }
+        h1 {
+            color: var(--primary);
+            margin: 0 0 5px 0;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            color: var(--cloud-blue);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0 0 15px 0;
+        }
 
         .contact-info {
-            margin: 1rem 0;
-            color: var(--text-muted);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
             font-size: 0.9rem;
+            color: var(--light-text);
         }
 
-        .contact-info a {
-            color: var(--accent-blue);
-            text-decoration: none;
-            margin: 0 0.5rem;
-        }
-
-        .contact-info a:hover { text-decoration: underline; }
-
-        .counter-badge {
-            display: inline-flex;
+        .contact-info span {
+            display: flex;
             align-items: center;
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.95rem;
-            margin-top: 1rem;
         }
 
-        .counter-number {
-            color: var(--accent-green);
-            font-weight: bold;
-            margin-left: 0.5rem;
+        h2 {
+            color: var(--primary);
+            border-left: 4px solid var(--cloud-blue);
+            padding-left: 10px;
+            font-size: 1.3rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .grid {
+        p {
+            margin: 0 0 10px 0;
+        }
+
+        .skills-grid {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-            margin-top: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
-        @media (min-width: 768px) {
-            .grid { grid-template-columns: 1fr 1fr; }
+        .skills-category strong {
+            color: var(--primary);
+            display: block;
+            margin-bottom: 5px;
         }
 
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 1.2rem;
+        .skills-category p {
+            font-size: 0.95rem;
+            color: var(--light-text);
         }
 
-        .project-list, .experience-list {
-            list-style-type: none;
-            padding: 0;
+        .job, .project {
+            margin-bottom: 20px;
         }
 
-        .project-item, .job-item {
-            margin-bottom: 2rem;
-            padding-left: 0;
-        }
-
-        .bullet-points {
-            padding-left: 1.2rem;
-            margin-top: 0.5rem;
-        }
-
-        .bullet-points li {
-            margin-bottom: 0.4rem;
-            color: var(--text-main);
-        }
-
-        .job-meta {
+        .job-header, .project-header {
             display: flex;
             justify-content: space-between;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 5px;
         }
 
-        .footer {
+        .job-company {
+            color: var(--cloud-blue);
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+
+        ul {
+            margin: 0 0 10px 0;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            font-size: 0.95rem;
+        }
+
+        footer {
+            margin-top: 40px;
+            border-top: 1px solid #eeeeee;
+            padding-top: 20px;
             text-align: center;
-            padding: 3rem 1rem;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            border-top: 1px solid var(--border-color);
-            margin-top: 4rem;
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+
+        .counter-box {
+            display: inline-block;
+            background: #e8f0fe;
+            color: var(--cloud-blue);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 20px; margin: 10px; }
+            .job-header, .project-header { flex-direction: column; }
         }
     </style>
+
+	<script src="https://tailwindcss.com"></script>
 </head>
 <body>
 
+<div class="container">
     <header>
         <h1>Peter Curt Castro</h1>
-        <p style="color: var(--accent-blue); font-size: 1.2rem; margin: 0.5rem 0 0 0; font-weight: 600;">
-            Aspiring Cloud Engineer | Service Desk Analyst (4+ Years IT Experience)
-        </p>
-        
+        <div class="subtitle">Aspiring Cloud Engineer | Service Desk Analyst (4+ Years IT Experience)</div>
         <div class="contact-info">
-            📱 +63-970-216-3891 | 📧 <a href="mailto:pcurtcast@gmail.com">pcurtcast@gmail.com</a> | 📍 Laguna, Philippines <br>
-            🔗 <a href="https://github.com" target="_blank">GitHub</a> | 🔗 <a href="https://linkedin.com" target="_blank">LinkedIn</a>
-        </div>
-
-        <div class="counter-badge">
-            👁️ Cloud Visitor Count: <span id="visitor-count" class="counter-number">Loading...</span>
+            <span>📱 +63-970-216-3891</span>
+            <span>📧 pcurtcast@gmail.com</span>
+            <span>📍 Siniloan, Laguna, Philippines</span>
+            <span>🔗 <a href="https://github.com/curtcast" target="_blank">GitHub</a></span>
+            <span>🔗 <a href="https://www.linkedin.com/in/peter-curt-castro-35427629a" target="_blank">LinkedIn</a></span>
         </div>
     </header>
 
-    <div class="container">
-        
-        <!-- Professional Summary -->
-        <section>
-            <h2>🎯 Professional Summary</h2>
-            <p>
-                Tech-savvy IT professional with over 4 years of hands-on experience in technical troubleshooting, incident management, and ITIL frameworks. Currently upskilling through Google’s Associate Cloud Engineer curriculum. Actively building hands-on competencies in cloud infrastructure automation, CI/CD pipelines, containerization, and serverless architectures to deliver reliable, scalable cloud operations.
-            </p>
-        </section>
+    <section>
+        <h2>🎯 Professional Summary</h2>
+        <p>Tech-savvy IT professional with over 4 years of hands-on experience in technical troubleshooting, incident management, and ITIL frameworks. Currently upskilling through Google’s Associate Cloud Engineer curriculum. Actively building hands-on competencies in cloud infrastructure automation, CI/CD pipelines, containerization, and serverless architectures to deliver reliable, scalable cloud operations.</p>
+    </section>
 
-        <!-- Technical Skills -->
-        <section style="margin-top: 2.5rem;">
-            <h2>🛠️ Technical Skills</h2>
-            <div class="grid">
-                <div class="card">
-                    <strong style="color: var(--accent-blue);">Cloud Platforms & Orchestration</strong>
-                    <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: var(--text-muted);">
-                        Google Cloud Platform (GCP - Associate Cloud Engineer in progress), Google Kubernetes Engine (GKE Autopilot), Docker Containerization
-                    </p>
-                </div>
-                <div class="card">
-                    <strong style="color: var(--accent-blue);">Infrastructure as Code (IaC)</strong>
-                    <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: var(--text-muted);">
-                        Terraform, GCS Remote State Backends, State Locking, Resource Lifecycle Management
-                    </p>
-                </div>
-                <div class="card">
-                    <strong style="color: var(--accent-blue);">Tools, Frameworks & CI/CD</strong>
-                    <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: var(--text-muted);">
-                        Git, GitHub Actions Automated Pipelines, Shell Scripting (Bash, sed automation), Linux Administration, ITIL Framework
-                    </p>
-                </div>
-                <div class="card">
-                    <strong style="color: var(--accent-blue);">Cloud Core Services & Support</strong>
-                    <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: var(--text-muted);">
-                        Cloud Load Balancing, Cloud Storage, Cloud Run, Firestore, Cloud Monitoring, Incident/Knowledge Management, Advanced Troubleshooting
-                    </p>
-                </div>
+    <section>
+        <h2>🛠️ Technical Skills</h2>
+        <div class="skills-grid">
+            <div class="skills-category">
+                <strong>Cloud Platforms</strong>
+                <p>Google Cloud Platform (GCP - Associate Cloud Engineer in progress)</p>
             </div>
-        </section>
+            <div class="skills-category">
+                <strong>Cloud Core Services</strong>
+                <p>Cloud Storage, Cloud Run Functions, Firestore, Cloud Build, Cloud Load Balancing, Cloud CDN, Cloud Monitoring</p>
+            </div>
+            <div class="skills-category">
+                <strong>Tools & Frameworks</strong>
+                <p>Git, GitHub, CI/CD Pipelines, Linux Administration, ITIL Framework</p>
+            </div>
+            <div class="skills-category">
+                <strong>Core Support</strong>
+                <p>Incident Management, Knowledge Management (KA), Advanced Troubleshooting</p>
+            </div>
+        </div>
+    </section>
 
-        <!-- Cloud Project Samples -->
-        <section style="margin-top: 2.5rem;">
-            <h2>🚀 Cloud Project Samples</h2>
-            <ul class="project-list">
-                <li class="project-item">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <strong style="font-size: 1.1rem; color: #ffffff;">Automated Cloud-Native Microservices Architecture (GCP & GKE)</strong>
-                        <span style="color: var(--accent-green); font-weight: bold; font-size: 0.85rem; border: 1px solid var(--accent-green); padding: 0.1rem 0.5rem; border-radius: 4px;">Active</span>
-                    </div>
-                    <ul class="bullet-points">
-                        <li><strong>Container Orchestration:</strong> Architected and deployed a multi-service decoupled portfolio application utilizing <strong>Google Kubernetes Engine (GKE) Autopilot</strong> to enforce highly available computing nodes with automated scaling policies.</li>
-                        <li><strong>Infrastructure as Code (IaC):</strong> Authored clean, modular <strong>Terraform blueprints</strong> to provision native cloud networks (VPC) and cluster components, utilizing a <strong>Google Cloud Storage (GCS)</strong> remote backend for synchronized state locking.</li>
-                        <li><strong>Advanced CI/CD Automation:</strong> Engineered a robust <strong>GitHub Actions pipeline</strong> utilizing parallel execution routines to run backend unit tests, build Docker containers, push to <strong>Artifact Registry</strong>, and execute zero-downtime rolling upgrades.</li>
-                        <li><strong>Resilience & Fault Tolerance:</strong> Enforced cluster-wide <strong>HTTP/TCP Liveness and Readiness probes</strong> to create a self-healing application environment alongside aggressive Recreate rollout deployment strategies.</li>
-                        <li><strong>Security & Secret Partitioning:</strong> Hardened cluster security parameters by deploying localized Kubernetes Secrets and securely mounting IAM Service Account credentials onto application filesystems to safely communicate with a <strong>Firestore NoSQL database</strong>.</li>
-                    </ul>
-                </li>
+    <section>
+        <h2>🚀 Cloud Project Samples</h2>
+        <div class="project">
+            <div class="project-header">
+                <span>Automated Full-Stack Serverless Resume Architecture (GCP)</span>
+                <span>Active</span>
+            </div>
+            <ul>
+                <li><strong>Architecture & Deployment:</strong> Designed and launched a highly available full-stack application hosting this digital resume via <strong>Cloud Storage</strong> and <strong>Cloud Load Balancing</strong>.</li>
+                <li><strong>Backend & DB Integration:</strong> Developed a Python dynamic visitor-counter microservice running on <strong>Cloud Run Functions</strong> that securely records entry logs into a <strong>Firestore NoSQL database</strong>.</li>
+                <li><strong>CI/CD Pipeline:</strong> Configured <strong>Cloud Build</strong> automated triggers linked with <strong>GitHub</strong> to enable automated continuous integration and continuous deployment.</li>
+                <li><strong>Security & Monitoring:</strong> Enforced strict cloud security postures by deploying custom <strong>IAM Service Accounts</strong> and integrated <strong>Cloud Monitoring Uptime Checks</strong>.</li>
             </ul>
-        </section>
+        </div>
+    </section>
 
-        <!-- Professional Experience -->
-        <section style="margin-top: 2.5rem;">
-            <h2>💼 Professional Experience</h2>
-            <ul class="experience-list">
-                <li class="job-item">
-                    <strong style="font-size: 1.1rem; color: #ffffff;">Service Desk Analyst</strong>
-                    <div class="job-meta">
-                        <span>Cognizant | Taguig City, Philippines</span>
-                        <span>Nov 2024 – Present</span>
-                    </div>
-                    <ul class="bullet-points">
-                        <li>Provide robust first-and-second level technical platform support, managing access control frameworks and application mapping for global users.</li>
-                        <li>Assisted with the baseline technical integration and scaling of Copilot integration, troubleshooting client-side constraints.</li>
+    <section>
+        <h2>💼 Professional Experience</h2>
+        
+        <div class="job">
+            <div class="job-header">
+                <span>Service Desk Analyst</span>
+                <span>Nov 2024 – Present</span>
+            </div>
+            <div class="job-company">Cognizant | Taguig City, Philippines</div>
+            <ul>
+                <li>Provide robust first-and-second level technical platform support, managing access control frameworks and application mapping for global users.</li>
+                <li>Assisted with the baseline technical integration and scaling of <strong>Copilot integration</strong>, troubleshooting client-side constraints.</li>
+                <li>Authored and maintained comprehensive <strong>Knowledge Articles (KA)</strong> to drive standardized infrastructure troubleshooting procedures.</li>
+                <li>Analyzed DSAT metric patterns to identify recurring technical platform errors and implement root-cause continuous improvement plans.</li>
+            </ul>
+        </div>
+
+        <div class="job">
+            <div class="job-header">
+                <span>Technical Helpdesk Associate</span>
+                <span>Jul 2022 – Nov 2024</span>
+            </div>
+            <div class="job-company">Atos | Pasay City, Philippines</div>
+            <ul>
+                <li>Diagnosed and resolved critical hardware, software, and enterprise network transport issues under strict SLAs.</li>
+                <li>Maintained infrastructure sanity metrics by rigorously logging, tracking, and routing operational platform bugs within enterprise ticketing engines.</li>
+                <li>Collaborated directly with secondary network and infrastructure tier engineers to resolve systemic technical problems.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <h2>🎓 Education</h2>
+        <div class="job-header">
+            <span>Bachelor of Science in Information Technology</span>
+            <span>2015 – 2020</span>
+        </div>
+        <div class="job-company">Laguna State Polytechnic University</div>
+    </section>
+
+    <footer>
+        <p>© 2026 Peter Curt Castro. Built on Google Cloud Platform.</p>
+        <!-- The Visitor Counter Box Display -->
+        <div class="counter-box">
+            👁️ Cloud Visitor Count: <span id="visitor-count">Loading...</span>
+        </div>
+    </footer>
+</div>
+
+<script>
+    // JS to fetch the counter. You will replace this URL with your actual GCP Cloud Function URL later.
+    const cloudFunctionUrl = 'https://asia-southeast1-gcp-serverless-portfolio.cloudfunctions.net/increment_visitor_counter';
+
+    async function getVisitorCount() {
+        try {
+            const response = await fetch(cloudFunctionUrl);
+            const data = await response.json();
+            document.getElementById('visitor-count').innerText = data.count;
+        } catch (error) {
+            console.error('Error fetching visitor count:', error);
+            document.getElementById('visitor-count').innerText = "Offline";
+        }
+    }
+
+    // Run the function when the page loads
+    window.onload = getVisitorCount;
+</script>
+
+</body>
+</html>
