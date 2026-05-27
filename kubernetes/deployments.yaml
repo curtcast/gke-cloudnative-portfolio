@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: counter-api
-        image: asia-southeast1-docker.pkg.dev/gcp-serverless-portfolio/gcp-serverless-portfolio/increment-visitor-counter:latest
+        image: portfolio-backend:latest
         ports:
         - containerPort: 8080
       # Injects your environment variable just like your Cloud Run setup does!
@@ -65,7 +65,7 @@ spec:
     spec:
       containers:
       - name: backend-api
-        image: asia-southeast1-docker.pkg.dev/gcp-serverless-portfolio/gcp-serverless-portfolio/backend:latest
+        image: portfolio-backend:latest
         ports:
         - containerPort: 8080
                livenessProbe:
@@ -113,7 +113,7 @@ spec:
     spec:
       containers:
       - name: frontend-ui
-        image: asia-southeast1-docker.pkg.dev/gcp-serverless-portfolio/gcp-serverless-portfolio/frontend:latest
+        image: portfolio-frontend:latest
         ports:
         - containerPort: 80
           livenessProbe:
