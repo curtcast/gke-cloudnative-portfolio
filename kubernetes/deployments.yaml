@@ -5,6 +5,8 @@ metadata:
   namespace: default
 spec:
   replicas: 1
+  strategy:
+    type: Recreate # Instantly kills the old pod to release connection locks
   selector:
     matchLabels:
       app: increment-visitor-counter
@@ -55,6 +57,8 @@ metadata:
   namespace: default
 spec:
   replicas: 1
+  strategy:
+    type: Recreate # Instantly kills the old pod to release connection locks
   selector:
     matchLabels:
       app: portfolio-backend
@@ -141,3 +145,4 @@ spec:
     targetPort: 8080
   selector:
     app: portfolio-frontend
+
