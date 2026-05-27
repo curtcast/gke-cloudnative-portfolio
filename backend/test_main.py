@@ -14,7 +14,7 @@ class TestBackendCounter(unittest.TestCase):
         # Simple sample simulation of your function output layout
         response_data = {"status": "success", "message": "Counter checked"}
         
-        self.assertEqual(response_data["status"], "success")
+        self.assertEqual(response_data["status"], "failed")
         self.assertIn("message", response_data)
 
 if __name__ == '__main__':
