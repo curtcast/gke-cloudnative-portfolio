@@ -6,7 +6,10 @@ metadata:
 spec:
   replicas: 1
   strategy:
-    type: Recreate
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1 # Allows the cluster to drop the old pod instantly to clear connections
   selector:
     matchLabels:
       app: increment-visitor-counter
@@ -21,7 +24,6 @@ spec:
         image: asia-southeast1-docker.pkg.dev/gcp-serverless-portfolio/gcp-serverless-portfolio/portfolio-backend:latest
         ports:
         - containerPort: 8080
-        # Injected environment configurations
         env:
         - name: FUNCTION_TARGET
           value: "increment_visitor_counter"
@@ -61,7 +63,10 @@ metadata:
 spec:
   replicas: 1
   strategy:
-    type: Recreate
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1 # Allows the cluster to drop the old pod instantly to clear connections
   selector:
     matchLabels:
       app: portfolio-backend
@@ -76,7 +81,6 @@ spec:
         image: asia-southeast1-docker.pkg.dev/gcp-serverless-portfolio/gcp-serverless-portfolio/portfolio-backend:latest
         ports:
         - containerPort: 8080
-        # Injected environment configurations
         env:
         - name: GCP_PROJECT
           value: "gcp-serverless-portfolio"
@@ -127,7 +131,6 @@ spec:
         image: asia-southeast1-docker.pkg.dev/gcp-serverless-portfolio/gcp-serverless-portfolio/portfolio-frontend:latest
         ports:
         - containerPort: 8080
-        # Keep HTTP check for Nginx since it serves a clean / index page!
         livenessProbe:
           httpGet:
             path: /
@@ -147,7 +150,7 @@ metadata:
   name: portfolio-frontend-service
   namespace: default
 spec:
-  type: LoadBalancer #changed back to LoadBalancer from NodePort
+  type: LoadBalancer
   ports:
   - port: 80
     targetPort: 8080
