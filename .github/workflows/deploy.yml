@@ -94,6 +94,14 @@ jobs:
         sed -i "s|portfolio-frontend:latest|portfolio-frontend:${{ github.sha }}|g" kubernetes/deployments.yaml
         sed -i "s|portfolio-backend:latest|portfolio-backend:${{ github.sha }}|g" kubernetes/deployments.yaml
 
+    # Creates a secure key vault entry inside your cluster so Python can authenticate with Firestore
+    - name: Create GKE Database Authentication Secret
+      run: |
+        kubectl create secret generic firestore-sa-key \
+          --from-literal=credentials.json='${{ secrets.GCP_SA_KEY }}' \
+          --dry-run=client -o yaml | kubectl apply -f -
+
+
     - name: Deploy Manifests to GKE Cluster
       run: |
         kubectl apply -f kubernetes/deployments.yaml
