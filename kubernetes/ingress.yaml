@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: portfolio-ingress
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    # Links the Google-managed certificate to your public gateway
+    networking.gke.io/managed-certificates: "portfolio-managed-cert"
+    networking.gke.io/frontend-config: "portfolio-frontend-config"
+spec:
+  rules:
+  - host: pcurtcast.xyz
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: portfolio-frontend-services
+            port:
+              number: 80
+  - host: www.pcurtcast.xyz
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: portfolio-frontend
+            port:
+              number: 80

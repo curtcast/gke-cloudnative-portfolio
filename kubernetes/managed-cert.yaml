@@ -1,0 +1,9 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: portfolio-managed-cert
+  namespace: default
+spec:
+  domains:
+    - pcurtcast.xyz
+    - www.pcurtcast.xyz
