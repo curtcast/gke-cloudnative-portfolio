@@ -1,7 +1,7 @@
 apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
-  name: portfolio-managed-cert
+  name: portfolio-managed-cert-v2
   namespace: default
 spec:
   domains:
