@@ -11,7 +11,7 @@ def increment_visitor_counter(request):
     if request.method == 'OPTIONS':
         headers = {
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', # Added POST
+            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
             'Access-Control-Allow-Headers': 'Content-Type',
             'Access-Control-Allow-Max-Age': '3600'
         }
@@ -21,7 +21,7 @@ def increment_visitor_counter(request):
     headers = {'Access-Control-Allow-Origin': '*'}
 
     try:
-        # Reference the database document you created
+        # Reference the database document create
         doc_ref = db.collection('site-data').document('visitors')
 
         # === 🚀 METHOD HANDLING SEPARATION ===

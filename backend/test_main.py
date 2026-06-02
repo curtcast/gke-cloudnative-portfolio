@@ -11,7 +11,7 @@ class TestBackendCounter(unittest.TestCase):
         mock_request = Mock()
         mock_request.get_json.return_value = {}
         
-        # Simple sample simulation of your function output layout
+        # Simple sample simulation of the function output layout
         response_data = {"status": "success", "message": "Counter checked"}
         
         self.assertEqual(response_data["status"], "success")

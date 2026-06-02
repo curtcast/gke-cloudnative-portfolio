@@ -1,6 +1,6 @@
 # ⚡ Cloud-Native Microservices Architecture on GKE with Terraform IaC
 
-![Deploy Status](https://github.com)
+[Deploy Status](https://github.com)
 
 A highly available, decoupled, cloud-native microservices portfolio application hosted entirely on Google Cloud Platform (GCP). This project orchestrates a multi-service architecture on a **Google Kubernetes Engine (GKE) Autopilot** cluster managed via **Terraform Infrastructure as Code (IaC)**, featuring enterprise-grade Layer 7 HTTPS termination using Google-Managed SSL Certificates and automated GitOps pipelines.
 
