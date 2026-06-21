@@ -1,12 +1,28 @@
 import functions_framework
 from google.cloud import firestore
 import json
+from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST
 
 # Initialize Firestore Client
 db = firestore.Client()
 
+VISITOR_API_REQUESTS = Counter(
+    'portfolio_visitor_requests_total', 
+    'Total requests to the visitor counter API', 
+    ['method']
+)
+
+
 @functions_framework.http
 def increment_visitor_counter(request):
+    # 3. Expose the /metrics endpoint for Prometheus scraping
+    # We strip trailing slashes to catch both "/metrics" and "/metrics/"
+    if request.path.strip('/') == 'metrics':
+        return generate_latest(), 200, {'Content-Type': CONTENT_TYPE_LATEST}
+
+    # Track metrics for incoming API traffic (GET, POST, OPTIONS)
+    VISITOR_API_REQUESTS.labels(method=request.method).inc()
+
     # Handle CORS preflight requests from your browser
     if request.method == 'OPTIONS':
         headers = {

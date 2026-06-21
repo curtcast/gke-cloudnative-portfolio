@@ -35,12 +35,14 @@ spec:
           mountPath: /var/secrets/google
           readOnly: true
         livenessProbe:
-          tcpSocket:
+          httpGet:
+            path: /metrics # 🌟 Hits your clean Prometheus metrics endpoint
             port: 8080
           initialDelaySeconds: 60
           periodSeconds: 20
         readinessProbe:
-          tcpSocket:
+          httpGet:
+            path: /metrics # 🌟 Hits your clean Prometheus metrics endpoint
             port: 8080
           initialDelaySeconds: 30
           periodSeconds: 10
@@ -54,10 +56,16 @@ kind: Service
 metadata:
   name: increment-visitor-counter-service
   namespace: default
+  labels:
+    app: increment-visitor-counter # Added label for easier tracking
 spec:
   type: ClusterIP
   ports:
-  - port: 8080
+  - name: http         # 🌟 Google Load Balancer hits this on port 80
+    port: 80
+    targetPort: 8080   # Forwards to your container's port 8080
+  - name: http-metrics # 🌟 Added this line
+    port: 8080
     targetPort: 8080
   selector:
     app: increment-visitor-counter
@@ -97,12 +105,14 @@ spec:
           mountPath: /var/secrets/google
           readOnly: true
         livenessProbe:
-          tcpSocket:
+          httpGet:
+            path: /metrics # 🌟 Hits your clean Prometheus metrics endpoint
             port: 8080
           initialDelaySeconds: 60
           periodSeconds: 20
         readinessProbe:
-          tcpSocket:
+          httpGet:
+            path: /metrics # 🌟 Hits your clean Prometheus metrics endpoint
             port: 8080
           initialDelaySeconds: 30
           periodSeconds: 10
@@ -116,13 +126,20 @@ kind: Service
 metadata:
   name: portfolio-backend-service
   namespace: default
+  labels:
+    app: portfolio-backend # Added label for easier tracking
 spec:
   type: ClusterIP
   ports:
-  - port: 8080
+  - name: http         # 🌟 Google Load Balancer hits this on port 80
+    port: 80
+    targetPort: 8080   # Forwards to your container's port 8080
+  - name: http-metrics # 🌟 Add this line
+    port: 8080
     targetPort: 8080
   selector:
     app: portfolio-backend
+
 ---
 apiVersion: apps/v1
 kind: Deployment
