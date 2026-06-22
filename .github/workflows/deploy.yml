@@ -102,6 +102,16 @@ jobs:
       run: |
         kubectl apply -f kubernetes/deployments.yaml
 
+    - name: Deploy Grafana Monitoring Stack
+      env:
+        GRAFANA_CLOUD_TOKEN: ${{ secrets.GRAFANA_CLOUD_TOKEN }}
+      run: |
+        kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -
+        # This processes the file and injects your token securely into the cluster config
+        cat kubernetes/grafana-alloy-config.yaml | envsubst | kubectl apply -f -
+
+
+
     - name: Verify Live Rollout Statuses
       run: |
         echo "=== Launching Parallel Rollout Verification ==="

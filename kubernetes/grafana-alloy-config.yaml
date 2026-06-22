@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alloy-config
+  namespace: monitoring
+data:
+  config.alloy: |
+    // Discover your frontend and backend pods
+    discovery.kubernetes "pods" {
+      role = "pod"
+    }
+
+    // Filter and scrape metrics from pods with prometheus annotations
+    prometheus.scrape "kubernetes_pods" {
+      targets = discovery.kubernetes.pods.targets
+      forward_to = [prometheus.remote_write.metrics_hosted_prometheus.receiver]
+    }
+
+    // Your secure Grafana Cloud outbound pipe
+    prometheus.remote_write "metrics_hosted_prometheus" {
+      endpoint {
+        name = "hosted-prometheus"
+        url  = "https://grafana.net"
+
+        basic_auth {
+          username = "3323108"
+          password = sys.env("GRAFANA_CLOUD_TOKEN")
+        }
+      }
+    }

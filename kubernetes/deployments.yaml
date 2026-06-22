@@ -14,6 +14,11 @@ spec:
     metadata:
       labels:
         app: increment-visitor-counter
+      # 🌟 ADDED PROMETHEUS SCRAPE ANNOTATIONS HERE
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/metrics"
+        prometheus.io/port: "8080"
     spec:
       terminationGracePeriodSeconds: 10
       containers:
@@ -86,6 +91,11 @@ spec:
     metadata:
       labels:
         app: portfolio-backend
+      # 🌟 ADDED PROMETHEUS SCRAPE ANNOTATIONS HERE
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/metrics"
+        prometheus.io/port: "8080"
     spec:
       terminationGracePeriodSeconds: 10
       containers:
