@@ -21,7 +21,7 @@ resource "helm_release" "prometheus_stack" {
     name  = "kubeControllerManager.enabled"
     value = "false"
   }
-}
+
 
   # 🌟 FORCE HELM TO WAIT UNTIL THE CLUSTER IS BUILT
   depends_on = [google_container_cluster.autopilot_cluster]
