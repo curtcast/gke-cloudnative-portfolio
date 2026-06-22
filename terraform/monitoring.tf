@@ -6,7 +6,7 @@ resource "helm_release" "prometheus_stack" {
   create_namespace = true
 
   # 🌟 FORCE HELM TO WAIT UNTIL THE CLUSTER IS BUILT
-  depends_on = [google_container_cluster.primary]
+  depends_on = [google_container_cluster.autopilot_cluster]
 
   values = [
     yamlencode({
