@@ -78,3 +78,27 @@ resource "google_monitoring_dashboard" "gke_dashboard" {
 }
 EOF
 }
+
+resource "helm_release" "kube_prometheus_stack" {
+  name       = "kube-prometheus-stack"
+  repository = "https://prometheus-community.github.io/helm-charts"
+  chart      = "kube-prometheus-stack"
+  namespace  = "monitoring"
+
+  # 🌟 ADD THE REMOTE WRITE ATTRIBUTE BLOCK HERE:
+  values = [
+    <<-EOT
+    prometheus:
+      prometheusSpec:
+        remoteWrite:
+        - url: "https://grafana.net"
+          basicAuth:
+            username:
+              name: grafana-cloud-credentials
+              key: username
+            password:
+              name: grafana-cloud-credentials
+              key: password
+    EOT
+  ]
+}
