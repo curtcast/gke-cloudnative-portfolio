@@ -38,6 +38,16 @@ except Exception as boot_err:
 def increment_visitor_counter(request):
     # Expose the /metrics endpoint for Prometheus scraping
     if request.path.strip('/') == 'metrics':
+        # 🌟 FIX: Force this container to pull the absolute latest value from Firestore
+        # right before handing data over to Prometheus.
+        try:
+            doc_ref = db.collection('site-data').document('visitors').get()
+            if doc_ref.exists:
+                current_count = doc_ref.to_dict().get('count', 0)
+                PORTFOLIO_TOTAL_VISITORS.set(current_count) # Sync memory with live DB
+        except Exception as e:
+            print(f"Error updating gauge during metrics scrape: {e}")
+
         return generate_latest(), 200, {'Content-Type': CONTENT_TYPE_LATEST}
 
     # Track metrics for incoming API traffic (GET, POST, OPTIONS)
