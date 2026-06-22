@@ -1,22 +1,29 @@
 import functions_framework
 from google.cloud import firestore
 import json
-from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST
+# 1. Added Gauge import here
+from prometheus_client import Counter, Gauge, generate_latest, CONTENT_TYPE_LATEST
 
 # Initialize Firestore Client
 db = firestore.Client()
 
+# This tracks incoming traffic frequency
 VISITOR_API_REQUESTS = Counter(
     'portfolio_visitor_requests_total', 
     'Total requests to the visitor counter API', 
     ['method']
 )
 
+# 2. NEW: This tracks the persistent absolute value from your database
+PORTFOLIO_TOTAL_VISITORS = Gauge(
+    'portfolio_visitors_total',
+    'Actual absolute visitor count synchronized from Firestore'
+)
+
 
 @functions_framework.http
 def increment_visitor_counter(request):
     # 3. Expose the /metrics endpoint for Prometheus scraping
-    # We strip trailing slashes to catch both "/metrics" and "/metrics/"
     if request.path.strip('/') == 'metrics':
         return generate_latest(), 200, {'Content-Type': CONTENT_TYPE_LATEST}
 
@@ -48,6 +55,9 @@ def increment_visitor_counter(request):
         # Fetch the current state of the document (Runs for both GET and POST)
         updated_doc = doc_ref.get()
         current_count = updated_doc.to_dict().get('count', 0)
+
+        # 3. NEW: Sync the live database total to your Prometheus telemetry matrix
+        PORTFOLIO_TOTAL_VISITORS.set(current_count)
 
         response_data = {'count': current_count}
         return (json.dumps(response_data), 200, headers)
