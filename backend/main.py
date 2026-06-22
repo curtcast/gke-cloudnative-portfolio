@@ -1,7 +1,6 @@
 import functions_framework
 from google.cloud import firestore
 import json
-# 1. Added Gauge import here
 from prometheus_client import Counter, Gauge, generate_latest, CONTENT_TYPE_LATEST
 
 # Initialize Firestore Client
@@ -14,16 +13,30 @@ VISITOR_API_REQUESTS = Counter(
     ['method']
 )
 
-# 2. NEW: This tracks the persistent absolute value from your database
+# This tracks the persistent absolute value from your database
 PORTFOLIO_TOTAL_VISITORS = Gauge(
     'portfolio_visitors_total',
     'Actual absolute visitor count synchronized from Firestore'
 )
 
+# ========================================================
+# 🌟 FIX: INITIALIZE METRIC WITH LIVE DATABASE VALUE ON BOOT
+# ========================================================
+try:
+    boot_doc = db.collection('site-data').document('visitors').get()
+    if boot_doc.exists:
+        initial_count = boot_doc.to_dict().get('count', 0)
+        PORTFOLIO_TOTAL_VISITORS.set(initial_count)
+    else:
+        PORTFOLIO_TOTAL_VISITORS.set(0)
+except Exception as boot_err:
+    print(f"Warning: Failed to pre-populate metrics metric baseline on startup: {boot_err}")
+    PORTFOLIO_TOTAL_VISITORS.set(0)
+
 
 @functions_framework.http
 def increment_visitor_counter(request):
-    # 3. Expose the /metrics endpoint for Prometheus scraping
+    # Expose the /metrics endpoint for Prometheus scraping
     if request.path.strip('/') == 'metrics':
         return generate_latest(), 200, {'Content-Type': CONTENT_TYPE_LATEST}
 
@@ -56,7 +69,7 @@ def increment_visitor_counter(request):
         updated_doc = doc_ref.get()
         current_count = updated_doc.to_dict().get('count', 0)
 
-        # 3. NEW: Sync the live database total to your Prometheus telemetry matrix
+        # Sync the live database total to your Prometheus telemetry matrix
         PORTFOLIO_TOTAL_VISITORS.set(current_count)
 
         response_data = {'count': current_count}
