@@ -1,37 +1,27 @@
 resource "helm_release" "prometheus_stack" {
   name             = "kube-prometheus-stack"
-  repository       = "https://prometheus-community.github.io/helm-charts" # 🌟 FIXED REPO URL
+  repository       = "https://github.io"
   chart            = "kube-prometheus-stack"
   namespace        = "monitoring"
   create_namespace = true
 
+  # 🌟 FORCE HELM TO WAIT UNTIL THE CLUSTER IS BUILT
+  depends_on = [google_container_cluster.primary]
+
   values = [
     yamlencode({
-      alertmanager = {
-        enabled = false
-      }
-      
-      # 🌟 ADDED YOUR GRAFANA CLOUD METRICS CONNECTION HERE
+      alertmanager = { enabled = false }
       prometheus = {
         prometheusSpec = {
-          remoteWrite = [
-            {
-              url = "https://grafana.net"
-              basicAuth = {
-                username = {
-                  name = "grafana-cloud-credentials"
-                  key  = "username"
-                }
-                password = {
-                  name = "grafana-cloud-credentials"
-                  key  = "password"
-                }
-              }
+          remoteWrite = [{
+            url = "https://grafana.net"
+            basicAuth = {
+              username = { name = "grafana-cloud-credentials", key = "username" }
+              password = { name = "grafana-cloud-credentials", key = "password" }
             }
-          ]
+          }]
         }
       }
     })
   ]
 }
-
