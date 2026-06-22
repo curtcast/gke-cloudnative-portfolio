@@ -11,10 +11,12 @@ resource "helm_release" "prometheus_stack" {
 
   values = [
     yamlencode({
-      # Prevent Helm from touching managed kube-system components
+      # Prevent Helm from touching managed kube-system components entirely
       kubeProxy             = { enabled = false }
       kubeScheduler         = { enabled = false }
       kubeControllerManager = { enabled = false }
+      coreDns               = { enabled = false }
+      kubeEtcd              = { enabled = false }
 
       alertmanager = { enabled = false }
       prometheus = {
