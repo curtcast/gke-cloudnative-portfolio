@@ -4,30 +4,18 @@ resource "helm_release" "prometheus_stack" {
   chart            = "kube-prometheus-stack"
   namespace        = "monitoring"
   create_namespace = true
-  force_update = true
-
-# Prevent Helm from touching managed kube-system components
-  set {
-    name  = "kubeProxy.enabled"
-    value = "false"
-  }
-
-  set {
-    name  = "kubeScheduler.enabled"
-    value = "false"
-  }
-
-  set {
-    name  = "kubeControllerManager.enabled"
-    value = "false"
-  }
-
+  force_update     = true
 
   # 🌟 FORCE HELM TO WAIT UNTIL THE CLUSTER IS BUILT
   depends_on = [google_container_cluster.autopilot_cluster]
 
   values = [
     yamlencode({
+      # Prevent Helm from touching managed kube-system components
+      kubeProxy             = { enabled = false }
+      kubeScheduler         = { enabled = false }
+      kubeControllerManager = { enabled = false }
+
       alertmanager = { enabled = false }
       prometheus = {
         prometheusSpec = {
