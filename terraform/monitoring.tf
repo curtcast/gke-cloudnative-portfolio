@@ -17,6 +17,9 @@ resource "helm_release" "prometheus_stack" {
       kubeControllerManager = { enabled = false }
       coreDns               = { enabled = false }
       kubeEtcd              = { enabled = false }
+      
+      # Disable node-exporter to comply with GKE Autopilot security restrictions
+      nodeExporter          = { enabled = false }
 
       alertmanager = { enabled = false }
       prometheus = {
