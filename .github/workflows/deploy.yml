@@ -52,7 +52,13 @@ jobs:
     - name: Run Terraform Initialization & Verification
       run: |
         cd terraform
-        terraform init
+        
+        # 🌟 FORCE CLEAR THE BROKEN HELM & TERRAFORM CACHE FILES
+        rm -rf .terraform/
+        rm -rf .terraform.lock.hcl
+        
+        # Re-initialize cleanly to fetch the correct charts from scratch
+        terraform init -upgrade
         terraform apply -auto-approve
 
     # ==========================================
