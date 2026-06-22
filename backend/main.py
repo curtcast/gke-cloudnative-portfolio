@@ -13,6 +13,11 @@ VISITOR_API_REQUESTS = Counter(
     ['method']
 )
 
+# 🌟 FIX: Pre-register labels on launch so they report 0 instead of nothing
+VISITOR_API_REQUESTS.labels(method='GET')
+VISITOR_API_REQUESTS.labels(method='POST')
+VISITOR_API_REQUESTS.labels(method='OPTIONS')
+
 # This tracks the persistent absolute value from your database
 PORTFOLIO_TOTAL_VISITORS = Gauge(
     'portfolio_visitors_total',
