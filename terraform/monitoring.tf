@@ -4,6 +4,8 @@ resource "helm_release" "prometheus_stack" {
   chart            = "kube-prometheus-stack"
   namespace        = "monitoring"
   create_namespace = true
+  force_update = true
+
 
   # 🌟 FORCE HELM TO WAIT UNTIL THE CLUSTER IS BUILT
   depends_on = [google_container_cluster.autopilot_cluster]
