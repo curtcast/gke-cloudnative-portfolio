@@ -25,7 +25,7 @@ resource "helm_release" "prometheus_stack" {
       prometheus = {
         prometheusSpec = {
           remoteWrite = [{
-            url = "https://prometheus-prod-XX-XXXX.grafana.net/api/v1/push"
+            url = "https://prometheus-prod-37-prod-ap-southeast-1.grafana.net/api/prom/push"
             basicAuth = {
               username = { name = "grafana-cloud-credentials", key = "username" }
               password = { name = "grafana-cloud-credentials", key = "password" }
