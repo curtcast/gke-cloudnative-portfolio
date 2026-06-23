@@ -300,6 +300,45 @@
     window.addEventListener('DOMContentLoaded', getVisitorCount);
 </script>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const API_ENDPOINT = '/api/counter';
+
+      if (sessionStorage.getItem('portfolio_session_counted')) {
+        try {
+          const response = await fetch(API_ENDPOINT, { method: 'GET' });
+          const data = await response.json();
+          updateCounterUI(data.count);
+        } catch (err) {
+          console.error('Failed to fetch baseline count:', err);
+        }
+        return;
+      }
+
+      try {
+        const response = await fetch(API_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ event: 'visitor_increment' })
+        });
+
+        if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+        const data = await response.json();
+        updateCounterUI(data.count);
+        sessionStorage.setItem('portfolio_session_counted', 'true');
+        console.log('✅ Telemetry pipeline synchronized.');
+      } catch (error) {
+        console.error('❌ Tracking error:', error);
+      }
+    });
+
+    function updateCounterUI(count) {
+      const counterElement = document.getElementById('visitor-count');
+      if (counterElement && count !== undefined) {
+        counterElement.textContent = count;
+      }
+    }
+  </script>
 
 </body>
 </html>
