@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GKE Portfolio Control Center</title>
+    <!-- Include your existing Tailwind CDN if needed -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col">
+    <!-- Clean Minimalist Header -->
+    <header class="p-6 bg-gray-800 border-b border-gray-700 flex justify-between items-center">
+        <h1 class="text-xl font-bold tracking-wider">⚡ GKE PORTFOLIO CONTROL CENTER</h1>
+        <a href="/" class="text-sm bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded transition">← Back to Portfolio</a>
+    </header>
+
+    <!-- Fullscreen Dashboard Frame -->
+    <main class="flex-1 w-full h-full p-4">
+        <iframe 
+            src="https://grandrhubarb3241.grafana.net/d/kohh2mb/gke-portfolio-control-center?orgId=1&refresh=10s&kiosk" 
+            class="w-full h-[85vh] rounded-lg border border-gray-700 shadow-2xl"
+            allowfullscreen>
+        </iframe>
+    </main>
+</body>
+</html>
