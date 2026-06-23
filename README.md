@@ -145,3 +145,18 @@ cd terraform
 terraform init
 terraform plan
 ```
+
+## 📊 Enterprise-Grade Observability & Monitoring
+
+To monitor infrastructure health, performance, and transactional cost profiles under load, this project integrates a cloud-native monitoring pipeline using a local **Prometheus Operator Stack** securely cross-relicating telemetry to an external **Grafana Cloud Core Engine**.
+
+### 🔗 Live Interactive Dashboard
+> 🚀 **Explore the live, interactive telemetry system:**  
+> [👉 View Live Production Metrics Dashboard](https://grandrhubarb3241.grafana.net/dashboard/snapshot/MFdBKEJvOjtV4jLs24mclVXjeAMqx8dh)
+
+### 📈 Monitored Metrics & Architecture Cockpit
+* **Business Value Analytics:** Persistent website interaction counters matching synchronized states across multi-replica container instances directly from Google Firestore.
+* **Traffic Ingestion Telemetry:** Operational ingress transaction speeds mapped by HTTP transaction types (GET, POST, OPTIONS) with fallback zero-vector state processing to ensure accurate metrics lines.
+* **GKE Autopilot Compute Control:** Live resource allocation requests tracking total core limits alongside pod reliability states to monitor memory usage limits and container stability.
+
+---
