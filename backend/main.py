@@ -1,7 +1,8 @@
 import functions_framework
 from google.cloud import firestore
 import json
-from prometheus_client import Counter, Gauge, generate_latest, CONTENT_TYPE_LATEST
+import time # 🌟 Added for tracking high-resolution execution time
+from prometheus_client import Counter, Gauge, Histogram, generate_latest, CONTENT_TYPE_LATEST
 
 # Initialize Firestore Client
 db = firestore.Client()
@@ -13,7 +14,15 @@ VISITOR_API_REQUESTS = Counter(
     ['method']
 )
 
-# 🌟 FIX: Pre-register labels on launch so they report 0 instead of nothing
+# 🌟 ADDED: This tracks latency/duration of requests in seconds
+# Buckets are in seconds (e.g., .005s, .01s, .025s ... up to 10s)
+VISITOR_REQUEST_DURATION = Histogram(
+    'portfolio_visitor_request_duration_seconds',
+    'Time taken to handle visitor counter API requests',
+    ['method']
+)
+
+# Pre-register labels on launch so they report 0 instead of nothing
 VISITOR_API_REQUESTS.labels(method='GET')
 VISITOR_API_REQUESTS.labels(method='POST')
 VISITOR_API_REQUESTS.labels(method='OPTIONS')
@@ -24,9 +33,7 @@ PORTFOLIO_TOTAL_VISITORS = Gauge(
     'Actual absolute visitor count synchronized from Firestore'
 )
 
-# ========================================================
-# 🌟 FIX: INITIALIZE METRIC WITH LIVE DATABASE VALUE ON BOOT
-# ========================================================
+# Initialize metric with live database value on boot
 try:
     boot_doc = db.collection('site-data').document('visitors').get()
     if boot_doc.exists:
@@ -43,17 +50,18 @@ except Exception as boot_err:
 def increment_visitor_counter(request):
     # Expose the /metrics endpoint for Prometheus scraping
     if request.path.strip('/') == 'metrics':
-        # 🌟 FIX: Force this container to pull the absolute latest value from Firestore
-        # right before handing data over to Prometheus.
         try:
             doc_ref = db.collection('site-data').document('visitors').get()
             if doc_ref.exists:
                 current_count = doc_ref.to_dict().get('count', 0)
-                PORTFOLIO_TOTAL_VISITORS.set(current_count) # Sync memory with live DB
+                PORTFOLIO_TOTAL_VISITORS.set(current_count) 
         except Exception as e:
             print(f"Error updating gauge during metrics scrape: {e}")
 
         return generate_latest(), 200, {'Content-Type': CONTENT_TYPE_LATEST}
+
+    # 🌟 START THE TIMER
+    start_time = time.perf_counter()
 
     # Track metrics for incoming API traffic (GET, POST, OPTIONS)
     VISITOR_API_REQUESTS.labels(method=request.method).inc()
@@ -66,6 +74,8 @@ def increment_visitor_counter(request):
             'Access-Control-Allow-Headers': 'Content-Type',
             'Access-Control-Allow-Max-Age': '3600'
         }
+        # Record duration for OPTIONS request before returning
+        VISITOR_REQUEST_DURATION.labels(method=request.method).observe(time.perf_counter() - start_time)
         return ('', 204, headers)
 
     # Set CORS headers for the main data requests
@@ -77,7 +87,6 @@ def increment_visitor_counter(request):
 
         # === 🚀 METHOD HANDLING SEPARATION ===
         if request.method == 'POST':
-            # Atomically increment the count field by 1 ONLY during a POST request
             doc_ref.update({'count': firestore.Increment(1)})
 
         # Fetch the current state of the document (Runs for both GET and POST)
@@ -88,8 +97,13 @@ def increment_visitor_counter(request):
         PORTFOLIO_TOTAL_VISITORS.set(current_count)
 
         response_data = {'count': current_count}
+        
+        # 🌟 RECORD THE METRIC SUCCESS DURATION
+        VISITOR_REQUEST_DURATION.labels(method=request.method).observe(time.perf_counter() - start_time)
         return (json.dumps(response_data), 200, headers)
 
     except Exception as e:
         print(f"Error updating/reading Firestore: {e}")
+        # 🌟 RECORD THE METRIC ERROR DURATION ALSO
+        VISITOR_REQUEST_DURATION.labels(method=request.method).observe(time.perf_counter() - start_time)
         return (json.dumps({'error': str(e)}), 500, headers)
