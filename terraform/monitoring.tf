@@ -11,6 +11,10 @@ resource "helm_release" "prometheus_stack" {
 
   values = [
     yamlencode({
+      # 🌟 ADDED: This completely shuts down and deletes the local Grafana web service
+      grafana = {
+        enabled = false
+      }
       # Prevent Helm from touching managed kube-system components entirely
       kubeProxy             = { enabled = false }
       kubeScheduler         = { enabled = false }
