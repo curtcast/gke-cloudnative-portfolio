@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: portfolio-backend-monitor
+  namespace: default
+  labels:
+    release: kube-prometheus-stack # This label tells Prometheus to pick it up
+spec:
+  selector:
+    matchLabels:
+      app: portfolio-backend-service # Matches your backend service selector
+  endpoints:
+  - port: http # Replace with the name of your service port exposing metrics (e.g., 8080 or 'api')
+    path: /metrics
+    interval: 15s
