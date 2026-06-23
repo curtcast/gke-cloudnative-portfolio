@@ -21,22 +21,27 @@ spec:
             name: portfolio-frontend-service
             port:
               number: 80
-      # 🌟 ADD THIS: Routes page views to your main backend API
       - path: /api
         pathType: Prefix
         backend:
           service:
             name: portfolio-backend-service
             port:
-              number: 80 #Changed to standard port 80
-      # 🌟 ADD THIS: Routes visitor clicks to your counter functions API
+              number: 80
       - path: /api/counter
         pathType: Prefix
         backend:
           service:
             name: increment-visitor-counter-service
             port:
-              number: 80 #Changed to standard port 80
+              number: 80
+      - path: /dashboard
+        pathType: Prefix
+        backend:
+          service:
+            name: grafana-service  # Your internal K8s service name
+            port:
+              number: 80           # The port your service exposes
 
   - host: www.pcurtcast.xyz
     http:
@@ -48,19 +53,24 @@ spec:
             name: portfolio-frontend-service
             port:
               number: 80
-      # 🌟 ADD THIS: Routes www traffic to your main backend API
       - path: /api
         pathType: Prefix
         backend:
           service:
             name: portfolio-backend-service
             port:
-              number: 80 #changed from 8080
-      # 🌟 ADD THIS: Routes www traffic to your counter functions API
+              number: 80
       - path: /api/counter
         pathType: Prefix
         backend:
           service:
             name: increment-visitor-counter-service
             port:
-              number: 80 #changed from 8080
+              number: 80
+      - path: /dashboard
+        pathType: Prefix
+        backend:
+          service:
+            name: grafana-service  # Your internal K8s service name
+            port:
+              number: 80           # The port your service exposes
