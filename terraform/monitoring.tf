@@ -6,6 +6,10 @@ resource "helm_release" "prometheus_stack" {
   create_namespace = true
   force_update     = true
 
+
+# Pin the version to prevent inconsistent final plan errors
+  version    = "87.5.1"
+
   # 🌟 FORCE HELM TO WAIT UNTIL THE CLUSTER IS BUILT
   depends_on = [google_container_cluster.autopilot_cluster]
 
