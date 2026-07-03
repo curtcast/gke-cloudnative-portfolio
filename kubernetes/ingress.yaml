@@ -35,13 +35,6 @@ spec:
             name: increment-visitor-counter-service
             port:
               number: 80
-      - path: /dashboard
-        pathType: Prefix
-        backend:
-          service:
-            name: grafana-service  # Your internal K8s service name
-            port:
-              number: 80           # The port your service exposes
 
   - host: www.pcurtcast.xyz
     http:
@@ -67,10 +60,3 @@ spec:
             name: increment-visitor-counter-service
             port:
               number: 80
-      - path: /dashboard
-        pathType: Prefix
-        backend:
-          service:
-            name: grafana-service  # Your internal K8s service name
-            port:
-              number: 80           # The port your service exposes
