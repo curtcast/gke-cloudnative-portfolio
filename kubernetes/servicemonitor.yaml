@@ -2,7 +2,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: portfolio-backend-monitor
-  namespace: default
+  namespace: monitoring
   labels:
     release: kube-prometheus-stack # This label tells Prometheus to pick it up
 spec:
