@@ -1,6 +1,6 @@
 variable "project_id" {
   type    = string
-  default = "gcp-serverless-portfolio"
+  default = "gke-cloudnative-portfolio"
 }
 
 variable "region" {

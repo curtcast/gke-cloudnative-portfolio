@@ -23,16 +23,16 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: counter-api
-        image: asia-southeast1-docker.pkg.dev/gcp-serverless-portfolio/gcp-serverless-portfolio/portfolio-backend:latest
+        image: asia-southeast1-docker.pkg.dev/gke-cloudnative-portfolio/gke-cloudnative-portfolio/portfolio-backend:latest
         ports:
         - containerPort: 8080
         env:
         - name: FUNCTION_TARGET
           value: "increment_visitor_counter"
         - name: GCP_PROJECT
-          value: "gcp-serverless-portfolio"
+          value: "gke-cloudnative-portfolio"
         - name: GOOGLE_CLOUD_PROJECT
-          value: "gcp-serverless-portfolio"
+          value: "gke-cloudnative-portfolio"
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: "/var/secrets/google/credentials.json"
         volumeMounts:
@@ -100,14 +100,14 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: backend-api
-        image: asia-southeast1-docker.pkg.dev/gcp-serverless-portfolio/gcp-serverless-portfolio/portfolio-backend:latest
+        image: asia-southeast1-docker.pkg.dev/gke-cloudnative-portfolio/gke-cloudnative-portfolio/portfolio-backend:latest
         ports:
         - containerPort: 8080
         env:
         - name: GCP_PROJECT
-          value: "gcp-serverless-portfolio"
+          value: "gke-cloudnative-portfolio"
         - name: GOOGLE_CLOUD_PROJECT
-          value: "gcp-serverless-portfolio"
+          value: "gke-cloudnative-portfolio"
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: "/var/secrets/google/credentials.json"
         volumeMounts:
@@ -169,7 +169,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: frontend-ui
-        image: asia-southeast1-docker.pkg.dev/gcp-serverless-portfolio/gcp-serverless-portfolio/portfolio-frontend:latest
+        image: asia-southeast1-docker.pkg.dev/gke-cloudnative-portfolio/gke-cloudnative-portfolio/portfolio-frontend:latest
         ports:
         - containerPort: 8080
         livenessProbe:

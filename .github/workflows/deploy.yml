@@ -6,9 +6,9 @@ on:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true 
-  PROJECT_ID: gcp-serverless-portfolio      
+  PROJECT_ID: gke-cloudnative-portfolio      
   REGION: asia-southeast1                   
-  REPO_NAME: gcp-serverless-portfolio            
+  REPO_NAME: gke-cloudnative-portfolio            
 
 jobs:
   deploy:

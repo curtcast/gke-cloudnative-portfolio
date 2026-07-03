@@ -9,7 +9,7 @@ terraform {
 
   # Stores your cluster memory layout securely inside your cloud storage bucket
   backend "gcs" {
-    bucket = "gcp-serverless-portfolio-tfstate"
+    bucket = "gke-cloudnative-portfolio-tfstate"
     prefix = "terraform/state"
   }
 }
