@@ -41,6 +41,7 @@ jobs:
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v3
 
+    # 5. Set up Bucket for tfstate if exist
     - name: Ensure Terraform State Bucket Exists
         run: |
           BUCKET_NAME="gke-portfolio-tfstate"
@@ -52,7 +53,7 @@ jobs:
             gcloud storage buckets create gs://$BUCKET_NAME --project=$PROJECT_ID --location=us-central1
           else
             echo "Bucket gs://$BUCKET_NAME already exists."
-          endif
+          fi
 
     # ==========================================
     # 🏗️ AUTOMATED TERRAFORM INFRASTRUCTURE LAYER
