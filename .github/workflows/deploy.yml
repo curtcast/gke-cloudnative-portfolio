@@ -43,7 +43,7 @@ jobs:
 
     # 5. Set up Bucket for tfstate if exist
     - name: Ensure Terraform State Bucket Exists
-        run: |
+      run: |
           BUCKET_NAME="gke-portfolio-tfstate"
           PROJECT_ID="gke-cloudnative-portfolio"
           
