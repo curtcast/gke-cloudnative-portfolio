@@ -41,6 +41,19 @@ jobs:
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v3
 
+    - name: Ensure Terraform State Bucket Exists
+        run: |
+          BUCKET_NAME="gke-portfolio-tfstate"
+          PROJECT_ID="gke-cloudnative-portfolio"
+          
+          # Check if bucket exists, if not, create it
+          if ! gcloud storage buckets describe gs://$BUCKET_NAME --project=$PROJECT_ID > /dev/null 2>&1; then
+            echo "Bucket gs://$BUCKET_NAME does not exist. Creating it..."
+            gcloud storage buckets create gs://$BUCKET_NAME --project=$PROJECT_ID --location=us-central1
+          else
+            echo "Bucket gs://$BUCKET_NAME already exists."
+          endif
+
     # ==========================================
     # 🏗️ AUTOMATED TERRAFORM INFRASTRUCTURE LAYER
     # ==========================================
